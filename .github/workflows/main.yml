@@ -17,4 +17,4 @@ jobs:
         server: win8042.site4now.net
         username: ${{ secrets.ftp_username}}
         password: ${{ secrets.ftp_password }}
-        server-dir: /novaApi/
+        server-dir: /proximaApi/
