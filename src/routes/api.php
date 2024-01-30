@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\RegisterController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -17,3 +19,16 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::group(['prefix' => 'v1/auth'], function () use ($router) {
+
+    $router->post('register', [RegisterController::class, 'clientRegister']); 
+    $router->post('verify/otp', [RegisterController::class, 'verify']); 
+    $router->post('create/pin', [RegisterController::class, 'createPIN']);
+    $router->post('reset/pin', [RegisterController::class, 'resetPIN']); 
+    $router->post('complete/pin/reset', [RegisterController::class, 'completePINReset']); 
+    $router->post('login', [LoginController::class, 'login']);
+
+
+});
+
