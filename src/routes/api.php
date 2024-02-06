@@ -22,9 +22,12 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::group(['namespace' => 'auth'], function () {
-    Route::post('register', [RegisterController::class,'register']);
+    Route::post('register', [RegisterController::class,'clientRegister']);
 });
 
+Route::get('/', function () {
+    return "HOME";
+});
 
 Route::group(['prefix' => 'v1/auth'], function () use ($router) {
 
