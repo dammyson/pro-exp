@@ -1,4 +1,11 @@
-mysql
+# Ignore macOS .DS_Store files
 .DS_Store
-.idea
+
+# Ignore JetBrains IDE project files
+.idea/
+
+# Ignore environment configuration file
 src/.env
+
+# Ignore Composer or npm dependencies
+src/vendor/
