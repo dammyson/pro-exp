@@ -38,6 +38,5 @@ Route::group(['prefix' => 'v1/auth'], function () use ($router) {
     $router->post('complete/pin/reset', [RegisterController::class, 'completePINReset']); 
     $router->post('login', [LoginController::class, 'login']);
 
-
 });
 
