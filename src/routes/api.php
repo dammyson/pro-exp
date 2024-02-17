@@ -18,8 +18,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
+
+
+Route::group(['namespace' => 'auth'], function () {
+    Route::post('register', [RegisterController::class,'clientRegister']);
+});
+
+Route::get('/', function () {
+    return "HOME";
 });
 
 Route::group(['prefix' => 'v1/'], function () use ($router) {
@@ -32,6 +41,7 @@ Route::group(['prefix' => 'v1/'], function () use ($router) {
         $router->post('login', [LoginController::class, 'login']);
     });
 
+<<<<<<< HEAD
     $router->group(['prefix' => 'campaigns/'], function () use ($router) {
         $router->get('/active-campaigns', [CampaignController::class,'activeCampaigns']);
         $router->get('/fetch-campaigns/{title}', [CampaignController::class,'fetchCampaigns']);
@@ -49,5 +59,7 @@ Route::group(['prefix' => 'v1/'], function () use ($router) {
             });
         });
     });
+=======
+>>>>>>> e0249016ac642e59aea953a090e05089b5033df9
 });
 
