@@ -9,3 +9,5 @@ src/.env
 
 # Ignore Composer or npm dependencies
 #src/vendor/
+/draft.yaml
+/.blueprint

@@ -1,0 +1,30 @@
+created:
+    - app/Http/Controllers/CompanyController.php
+    - app/Http/Controllers/ClientController.php
+    - app/Http/Controllers/BrandController.php
+    - database/factories/CompanyFactory.php
+    - database/factories/ClientFactory.php
+    - database/factories/BrandFactory.php
+    - database/factories/ClientContactFactory.php
+    - database/migrations/2024_02_18_061846_create_companies_table.php
+    - database/migrations/2024_02_18_061847_create_clients_table.php
+    - database/migrations/2024_02_18_061848_create_brands_table.php
+    - database/migrations/2024_02_18_061849_create_client_contacts_table.php
+    - database/migrations/2024_02_18_061850_create_company_user_table.php
+    - app/Models/Company.php
+    - app/Models/Client.php
+    - app/Models/Brand.php
+    - app/Models/ClientContact.php
+    - tests/Feature/Http/Controllers/CompanyControllerTest.php
+    - tests/Feature/Http/Controllers/ClientControllerTest.php
+    - tests/Feature/Http/Controllers/BrandControllerTest.php
+    - app/Http/Requests/CompanyStoreRequest.php
+    - app/Http/Requests/ClientStoreRequest.php
+    - app/Http/Requests/BrandStoreRequest.php
+updated:
+    - routes/web.php
+models:
+    Company: { id: id, name: string, address: 'string nullable', logo: 'string nullable', company_rc: 'string nullable', email: 'string nullable', phone_number: 'string nullable', website: 'string nullable', city: 'string nullable', state: 'string nullable', country: 'string nullable', timestamps: timestamps, relationships: { belongsToMany: User } }
+    Client: { name: string, image_url: 'string nullable', created_by: id, company_id: id, street_address: 'string nullable', city: 'string nullable', state: 'string nullable', nationality: 'string nullable', timestamps: timestamps, relationships: { hasMany: 'ClientContact, Brand, Campaign', belongsTo: Company } }
+    Brand: { name: string, image_url: 'string nullable', industry_code: string, sub_industry_code: string, slug: string, created_by: id, client_id: id, timestamps: timestamps, relationships: { belongsTo: Client, hasMany: Campaign } }
+    ClientContact: { client_id: id, first_name: string, last_name: string, email: string, phone_number: string, is_primary: boolean, timestamps: timestamps, relationships: { belongsTo: Client } }
