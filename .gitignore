@@ -8,4 +8,4 @@
 src/.env
 
 # Ignore Composer or npm dependencies
-src/vendor/
+#src/vendor/
