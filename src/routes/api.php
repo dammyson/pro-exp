@@ -23,14 +23,6 @@ use Illuminate\Support\Facades\Route;
 // });
 
 
-Route::group(['namespace' => 'auth'], function () {
-    Route::post('register', [RegisterController::class,'clientRegister']);
-});
-
-Route::get('/', function () {
-    return "HOME";
-});
-
 Route::group(['prefix' => 'v1/'], function () use ($router) {
     
     $router->group(['prefix' => 'auth/'], function () use ($router) {
@@ -41,23 +33,30 @@ Route::group(['prefix' => 'v1/'], function () use ($router) {
         $router->post('complete/pin/reset', [RegisterController::class, 'completePINReset']); 
         $router->post('login', [LoginController::class, 'login']);
     });
+});
 
-    $router->group(['prefix' => 'campaigns/'], function () use ($router) {
-        $router->get('/active-campaigns', [CampaignController::class,'activeCampaigns']);
-        $router->get('/fetch-campaigns/{title}', [CampaignController::class,'fetchCampaigns']);
-        $router->post('/', [CampaignController::class,'storeInformation']);
-        // $router->get('/', [CampaignController::class,'index']);
+Route::middleware(['auth:api'])->group(function ($router) {
 
-        $router->group(['prefix' => '{campaign_id}/'], function () use ($router) {
-            $router->get('/', [CampaignController::class,'show']);          
-            $router->group(['prefix' => 'games/'], function () use ($router) {
-                $router->get('/', [CampaignGameController::class, 'index']);
-                $router->post('/', [CampaignGameController::class, 'store']);
-                $router->get('/{game_id}', [CampaignGameController::class, 'show']);
-                // $router->post('/play/start', [CampaignGameController::class, 'startNewGamePlay']);
-                // $router->post('/play/result', [CampaignGameController::class, 'registerGameActivity']);
+    Route::group(['prefix' => 'v1/'], function () use ($router) {
+        $router->group(['prefix' => 'campaigns/'], function () use ($router) {
+            $router->get('/active-campaigns', [CampaignController::class,'activeCampaigns']);
+            $router->get('/fetch-campaigns/{title}', [CampaignController::class,'fetchCampaigns']);
+            $router->post('/', [CampaignController::class,'storeInformation']);
+            $router->get('/', [CampaignController::class,'index']);
+    
+            $router->group(['prefix' => '{campaign_id}/'], function () use ($router) {
+                $router->get('/', [CampaignController::class,'show']);          
+                $router->group(['prefix' => 'games/'], function () use ($router) {
+                    $router->get('/', [CampaignGameController::class, 'index']);
+                    $router->post('/', [CampaignGameController::class, 'store']);
+                    $router->get('/{game_id}', [CampaignGameController::class, 'show']);
+                    // $router->post('/play/start', [CampaignGameController::class, 'startNewGamePlay']);
+                    // $router->post('/play/result', [CampaignGameController::class, 'registerGameActivity']);
+                });
             });
         });
     });
+    
 });
+
 

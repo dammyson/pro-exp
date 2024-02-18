@@ -25,7 +25,7 @@ class LoginController extends Controller
             })->first();
 
             if (is_null($user)) {
-                return response()->json(['error' => true, 'message' => 'Invalid credentials'], 400);
+                return response()->json(['error' => true, 'message' => 'Invalid credentials'], 401);
             }
     
             if (Hash::check($request->password_or_pin, $user->password) || $request->password_or_pin === $user->pin) {
@@ -33,8 +33,9 @@ class LoginController extends Controller
                 $data['token'] = $user->createToken('Nova')->accessToken;
 
                 return response()->json(['is_correct' => true, 'message' => 'Login Successful', 'data' => $data], 200);
+
             } else {
-                return response()->json(['error' => true, 'message' => 'Invalid credentials'], 400);
+                return response()->json(['error' => true, 'message' => 'Invalid credentials'], 401);
             }
         }catch(\Exception $exception){
             return response()->json(['message' => $exception->getMessage()], 500);

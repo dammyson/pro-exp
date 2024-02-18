@@ -70,6 +70,7 @@ class CampaignController extends Controller
             ], $validated);
 
         } catch (\Throwable $th) {
+            dd($th);
             report($th);
             return response()->json(['error' => true, 'mesage' => $th->getMessage()], 500);
         }
