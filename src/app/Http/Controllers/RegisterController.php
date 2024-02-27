@@ -19,7 +19,6 @@ class RegisterController extends Controller
         $this->validate($request, [
             'first_name' => 'required|string',
             'last_name' => 'required|string',
-            'username' => 'required|string|unique:users',
             'phone_number' => 'required|numeric|digits:11|unique:users',
             'email' => 'required|email|unique:users',
             'password' => 'required|string|min:6|confirmed',
@@ -33,6 +32,7 @@ class RegisterController extends Controller
                 'first_name' => $request->first_name ,
                 'last_name' => $request->last_name ,
                 'username' => $request->username ,
+                'status' => "Active" ,
             ]);
     
             // Generate a random verification code
