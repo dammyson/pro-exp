@@ -1,57 +1,12 @@
 models:
-  Company:
+  CampaignRule:
     id: id
     name: string
-    address: string nullable
-    logo: string nullable
-    company_rc: string nullable
-    email: string nullable
-    phone_number: string nullable
-    website: string nullable
-    city: string nullable
-    state: string nullable
-    country: string nullable
-    timestamps: true
     relationships:
-      belongsToMany: User
-  Client:
-    name: string
-    image_url: string nullable
-    created_by: id
-    company_id: id
-    street_address: string nullable
-    city: string nullable
-    state: string nullable
-    nationality: string nullable
-    timestamps: true
-    relationships:
-      hasMany: ClientContact, Brand, Campaign
-      belongsTo: Company
-  Brand:
-    name: string
-    image_url: string nullable
-    industry_code: string
-    sub_industry_code: string
-    slug: string
-    created_by: id
-    client_id: id
-    timestamps: true
-    relationships:
-      belongsTo: Client
-      hasMany: Campaign
-  ClientContact:
-    client_id: id
-    first_name: string
-    last_name: string
-    email: string
-    phone_number: string
-    is_primary: boolean
-    timestamps: true
-    relationships:
-      belongsTo: Client
+      belongsToMany: Campaign
 
 controllers:
-  Company:
+  CampaignRule:
     index:
       query: all
 
@@ -59,18 +14,3 @@ controllers:
       validate: name, 
       save: Company
 
-  Client:
-    index:
-      query: all
-
-    store:
-      validate: name, 
-      save: Client
-
-  Brand:
-    index:
-      query: all
-
-    store:
-      validate: name, 
-      save: Brand

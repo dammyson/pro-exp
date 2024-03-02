@@ -20,7 +20,6 @@ class LoginController extends Controller
         try{
             $user = User::where(function ($query) use ($request) {
                 $query->where('email', $request->credential)
-                      ->orWhere('username', $request->credential)
                       ->orWhere('phone_number', $request->credential);
             })->first();
 

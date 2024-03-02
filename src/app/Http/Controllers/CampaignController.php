@@ -27,6 +27,22 @@ class CampaignController extends Controller
     }
 
 
+    public function index()
+    {
+        try {
+            $campaigns = Campaign::get();
+
+            if ($campaigns->isEmpty()) {
+                return response()->json(['message' => 'No campaigns found.'], 404);
+            }
+
+        } catch (\Throwable $th) {
+            report($th);
+            return response()->json(['error' => true, 'message' => 'Something went wrong'], 500);
+        }
+        return response()->json(['message' => 'Active campaigns found.', 'campaigns' => $campaigns], 200);
+    }
+
     public function fetchCampaigns($title)
     {
         try {
@@ -66,7 +82,8 @@ class CampaignController extends Controller
                 'brand_id' => $validated['brand_id'],
                 'company_id' => $validated['company_id'],
                 'start_date' => $validated['start_date'],
-                'end_date' => $validated['end_date']
+                'end_date' => $validated['end_date'],
+                'status' => 'ACTIVE'
             ], $validated);
 
         } catch (\Throwable $th) {

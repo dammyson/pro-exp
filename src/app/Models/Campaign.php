@@ -10,7 +10,7 @@ class Campaign extends Model
 {
     use HasFactory,  UuidTrait;
 
-    protected $with = ['rules', 'subscriptionPlans', 'adBreakers', 'games', 'leaderboardRewards'];
+   // protected $with = ['rules', 'subscriptionPlans', 'adBreakers', 'games', 'leaderboardRewards'];
 
     protected $fillable = ['type', 'title', 'client_id', 'brand_id', 'company_id',
     'start_date', 'end_date', 'status', 'daily_ads_budget', 'total_ads_budget',
