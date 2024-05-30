@@ -67,7 +67,7 @@ class CampaignGameController extends Controller
     public function show($campaign_id, $game_id)
     {
         try {
-            $game = CampaignGame::find($game_id);
+            $game = CampaignGame::where('game_id', $game_id)->where('campaign_id', $campaign_id)->first();
 
             if (!$game) {
                 return response()->json(['error' => true, 'message' => 'Campaign game not found'], 404);

@@ -21,7 +21,6 @@ class CompanyStoreRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string'],
-            'name' => ['required', 'string'],
             'address' => ['nullable', 'string'],
             'logo' => ['nullable', 'string'],
             'company_rc' => ['nullable', 'string'],
@@ -30,7 +29,7 @@ class CompanyStoreRequest extends FormRequest
             'website' => ['nullable', 'string'],
             'city' => ['nullable', 'string'],
             'state' => ['nullable', 'string'],
-            'country' => ['nullable', 'string'],
+            'country' => ['nullable', 'string'],   
         ];
     }
 }

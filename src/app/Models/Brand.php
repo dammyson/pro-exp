@@ -38,16 +38,20 @@ class Brand extends Model
         'client_id' => 'integer',
     ];
 
+    // company staff
     public function client(): BelongsTo
     {
         return $this->belongsTo(Client::class);
     }
 
+    // created by User // relationship not found in migration file except we are
+    // talking of multi-nested relationship
     public function createdBy(): BelongsTo
     {
-        return $this->belongsTo(CreatedBy::class);
+        return $this->belongsTo(User::class);
     }
 
+    // a brand can have many campaigns
     public function campaigns(): HasMany
     {
         return $this->hasMany(Campaign::class);

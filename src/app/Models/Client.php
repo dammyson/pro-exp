@@ -61,6 +61,6 @@ class Client extends Model
 
     public function createdBy(): BelongsTo
     {
-        return $this->belongsTo(CreatedBy::class);
+        return $this->belongsTo(User::class);
     }
 }

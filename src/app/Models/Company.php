@@ -10,6 +10,10 @@ use App\Traits\UuidTrait;
 class Company extends Model
 {
     use HasFactory, UuidTrait;
+    
+    // protected $keyType = 'string';
+    
+    // public $incrementing = false;
 
     /**
      * The attributes that are mass assignable.
@@ -33,5 +37,9 @@ class Company extends Model
     public function users()
     {
         return $this->belongsToMany(User::class);
+    }
+
+    public function CompanyUser() {
+        return $this->hasMany(CompanyUser::class);
     }
 }

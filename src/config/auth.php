@@ -46,6 +46,12 @@ return [
             'provider' => 'users',
             'hash' => false,
         ],
+
+        'audience' => [
+    		// 'driver' => 'token',
+    		'driver' => 'passport',
+    		'provider' => 'audiences',
+    	],
     ],
 
     /*
@@ -75,6 +81,11 @@ return [
         //     'driver' => 'database',
         //     'table' => 'users',
         // ],
+
+        'audiences' => [
+    		'driver' => 'eloquent',
+    		'model' => App\Models\Audience::class,
+    	],
     ],
 
     /*
@@ -99,6 +110,13 @@ return [
     'passwords' => [
         'users' => [
             'provider' => 'users',
+            'table' => 'password_reset_tokens',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+
+        'audiences' => [
+            'provider' => 'audiences',
             'table' => 'password_reset_tokens',
             'expire' => 60,
             'throttle' => 60,

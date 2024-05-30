@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('games', function (Blueprint $table) {
             $table->uuid('id')->primary();
+            // I think this name field should be have a unique property so 
+            // two games does not have the same name
             $table->string('name');
             $table->timestamps();
         });
