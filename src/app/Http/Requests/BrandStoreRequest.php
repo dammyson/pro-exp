@@ -25,7 +25,8 @@ class BrandStoreRequest extends FormRequest
             'industry_code' => ['nullable', 'string'],
             'sub_industry_code' => ['nullable', 'string'],
             'slug' => ['nullable', 'string'],
-            'client_id' => ['required', 'integer', 'exists:Clients,id'],
+            'created_by' => ['required', 'uuid', 'exists:Users,id'],
+            'client_id' => ['required', 'uuid', 'exists:Clients,id'],
         ];
     }
 }

@@ -59,9 +59,16 @@ class User extends Authenticatable
         return $this->belongsToMany(Company::class);
     }
 
+    // Emeka 
+    public function CompanyUser() {
+        return $this->hasMany(CompanyUser::class);
+    }
+
     public function assignRole($roles, string $guard = null)
     {
         $roles = \is_string($roles) ? [$roles] : $roles;
+
+        // no value if the condition returns true
         $guard = $guard ? : $this->getDefaultGuardName();
 
         $roles = collect($roles)

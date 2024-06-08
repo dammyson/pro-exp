@@ -66,9 +66,13 @@ class CampaignController extends Controller
         $validated = $this->validate($request, [
             'type' => 'required|string|min:3',
             'title' => 'required|string|min:3',
-            'client_id' => 'required',
-            'brand_id' => 'required',
-            'company_id' => 'required',
+            // 'client_id' => 'required',
+            // 'brand_id' => 'required',
+            // 'company_id' => 'required',
+            'brand_id' => ['required', 'uuid', 'exists:brands,id'],
+            'client_id' => ['required', 'uuid', 'exists:clients,id'],
+            'company_id' => ['required', 'uuid', 'exists:companies,id'],
+            'created_by' => ['required', 'uuid', 'exists:users,id'],
             'start_date' => 'required|date|after_or_equal:today',
             'end_date' => 'required|date|after:start_date',
             'daily_start' => 'sometimes|required|date_format:H:i:s',
@@ -83,7 +87,7 @@ class CampaignController extends Controller
                 'company_id' => $validated['company_id'],
                 'start_date' => $validated['start_date'],
                 'end_date' => $validated['end_date'],
-                'status' => 'ACTIVE'
+                'status' => 'CREATED'
             ], $validated);
 
         } catch (\Throwable $th) {

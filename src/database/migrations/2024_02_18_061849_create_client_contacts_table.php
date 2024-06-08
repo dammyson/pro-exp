@@ -12,8 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('client_contacts', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('client_id');
+            $table->uuid('id')->primary();
+            $table->uuid('client_id');
+            $table->foreign('client_id')->references('id')->on('clients')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+
             $table->string('first_name');
             $table->string('last_name');
             $table->string('email');

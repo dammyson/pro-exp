@@ -4,28 +4,26 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Mail\VerificationMail;
-use App\Models\User;
+use App\Models\Audience;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
-class RegisterController extends Controller
+class AudienceRegisterController extends Controller
 {
-    //
-
-    public function clientRegister(Request $request)
+    public function audienceRegister(Request $request)
     {
         $this->validate($request, [
             'first_name' => 'required|string',
             'last_name' => 'required|string',
-            'phone_number' => 'required|numeric|digits:11|unique:users',
-            'email' => 'required|email|unique:users',
+            'phone_number' => 'required|numeric|digits:11|unique:audiences',
+            'email' => 'required|email|unique:audiences',
             'password' => 'required|string|min:6|confirmed',
         ]);
     
         try {
-            $create = User::create([
+            $create = Audience::create([
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
                 'phone_number' => $request->phone_number ,
@@ -44,21 +42,21 @@ class RegisterController extends Controller
             return response()->json(['error' => true, 'message' => $exception->getMessage()], 500);
         }
     
-        $data['user'] =  $create;
+        $data['audience'] =  $create;
         $data['token'] =  $create->createToken('Nova')->accessToken;
     
         return response()->json(['error' => false, 'message' => 'Client registration successful. Verification code sent to your email.', 'data' => $data], 201);
     }
-    
-    
-    public function resetPIN(Request $request)
+
+
+    public function audienceResetPIN(Request $request)
     {
          $this->validate($request, [
             'phone_number' => 'required|numeric|digits:11',
         ]);
 
         try{
-                $reset = User::where('phone_number', $request->phone_number)->first();
+                $reset = Audience::where('phone_number', $request->phone_number)->first();
                 if ($reset == null) {
                     return response()->json(['error' => true, 'message' => 'phone_number does not exist'], 404);
                 }
@@ -71,10 +69,11 @@ class RegisterController extends Controller
             }catch (\Exception $exception){
             return response()->json(['error' => true, 'message' => $exception->getMessage()], 500);
         }
-        return response()->json(['error' => false, 'message' => 'prompt user to enter new pin', 'data' => []], 200);
+        return response()->json(['error' => false, 'message' => 'prompt audience to enter new pin', 'data' => []], 200);
     }
 
-    public function completePINReset(Request $request)
+
+    public function audienceCompletePINReset(Request $request)
     {
         $this->validate($request, [
             'phone_number' => 'required|numeric|digits:11',
@@ -83,17 +82,17 @@ class RegisterController extends Controller
         ]);
 
         try{
-            $user = User::where('phone_number', $request->phone_number)->first();
+            $audience = Audience::where('phone_number', $request->phone_number)->first();
 
-            if (!$user) {
-                return response()->json(['error' => true, 'message' => 'User not found'], 404);
+            if (!$audience) {
+                return response()->json(['error' => true, 'message' => 'Audience not found'], 404);
             }
         
 
             // verify otp then save password else return 
-            if ($user && $request->otp === '1111') {
-                $user->pin = $request->new_pin;
-                $user->save();
+            if ($audience && $request->otp === '1111') {
+                $audience->pin = $request->new_pin;
+                $audience->save();
                 $code = 200;
             } else {
                 $code = 400; 
@@ -102,11 +101,11 @@ class RegisterController extends Controller
         }catch (\Exception $exception){
             return response()->json(['error' => true, 'message' => $exception->getMessage()], 500);
         }
-        return response()->json(['error' => false, 'message' =>'PIN Reset completed', 'data' => $user],  $code);
+        return response()->json(['error' => false, 'message' =>'PIN Reset completed', 'data' => $audience],  $code);
     }
 
 
-    public function createPIN(Request $request)
+    public function audienceCreatePIN(Request $request)
     {
         $this->validate($request, [
             'pin' => 'required|numeric|digits:4',
@@ -114,14 +113,14 @@ class RegisterController extends Controller
         ]);
     
         try {
-            $user = User::where('phone_number', $request->phone_number)->first();
+            $audience = Audience::where('phone_number', $request->phone_number)->first();
     
-            if (!$user) {
-                return response()->json(['status' => false, 'message' => 'User not found'], 404);
+            if (!$audience) {
+                return response()->json(['status' => false, 'message' => 'Audience not found'], 404);
             }
     
-            $user->pin = $request->pin;
-            $user->save();
+            $audience->pin = $request->pin;
+            $audience->save();
     
     
         } catch (\Exception $exception) {
@@ -130,7 +129,8 @@ class RegisterController extends Controller
     
         return response()->json(['status' => true, 'message' => 'Pin updated successfully'], 200);
     }
-    
+
+
     public function sendVerificationCode($email, $code)
     {
         return Mail::to($email)->send(new VerificationMail($code));
@@ -140,7 +140,8 @@ class RegisterController extends Controller
     {
         return Str::random($length);
     }
-    public function verify(Request $request)
+
+    public function audienceVerify(Request $request)
     {
         $this->validate($request, [
             'phone_number' => 'required|numeric|digits:11',
@@ -149,20 +150,20 @@ class RegisterController extends Controller
 
         try{
 
-            $user = User::where('phone_number', $request->phone_number)->first();
+            $audience = Audience::where('phone_number', $request->phone_number)->first();
 
-            if (!$user) {
-                return response()->json(['status' => 400, 'message' => 'User not found'], 400);
+            if (!$audience) {
+                return response()->json(['status' => 400, 'message' => 'Audience not found'], 400);
             }
             
-            // logger("Request OTP: {$request->otp}, User OTP: {$user->otp}");
+            // logger("Request OTP: {$request->otp}, Audience OTP: {$user->otp}");
 
 
-            if ($user && trim($request->otp) === '1111') {
-                // logger("OTP is correct for user: {$user->phone_number}");
+            if ($audience && trim($request->otp) === '1111') {
+                // logger("OTP is correct for audience: {$audience->phone_number}");
 
                 // Update the status if OTP is '1111'
-                $user->update([
+                $audience->update([
                     'status' => 1, 
                 ]);
 
@@ -174,6 +175,6 @@ class RegisterController extends Controller
         }catch (\Exception $e){
             return response()->json(['status' => false, 'message' => $e->getMessage()], 500);
         }
-        return response()->json(['status' => true, 'message' => 'Phone Number Verified', 'data' => $user], $code);
+        return response()->json(['status' => true, 'message' => 'Phone Number Verified', 'data' => $audience], $code);
     }
 }

@@ -11,6 +11,7 @@ return new class extends Migration
      */
     public function up()
     {
+        // what kind of configuration are obtained here
         $tableNames = config('permission.table_names');
         $columnNames = config('permission.column_names');
 

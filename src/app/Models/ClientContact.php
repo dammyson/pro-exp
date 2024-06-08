@@ -10,6 +10,9 @@ use App\Traits\UuidTrait;
 class ClientContact extends Model
 {
     use HasFactory, UuidTrait;
+    // protected $keyType = 'string';
+    
+    // public $incrementing = false;
 
     /**
      * The attributes that are mass assignable.
@@ -30,11 +33,11 @@ class ClientContact extends Model
      *
      * @var array
      */
-    protected $casts = [
-        'id' => 'integer',
-        'client_id' => 'integer',
-        'is_primary' => 'boolean',
-    ];
+    // protected $casts = [
+    //     'id' => 'integer',
+    //     'client_id' => 'integer',
+    //     'is_primary' => 'boolean',
+    // ];
 
     public function client(): BelongsTo
     {

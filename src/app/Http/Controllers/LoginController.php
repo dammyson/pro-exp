@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
+
 class LoginController extends Controller
 {
     
@@ -47,6 +48,6 @@ class LoginController extends Controller
         $request->user()->token()->revoke();
         return response()->json([
             'message' => 'Successfully logged out'
-        ], 201);
+        ], 204);
     }
 }
