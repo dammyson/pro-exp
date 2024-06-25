@@ -28,13 +28,13 @@ class CompanyController extends Controller
     public function storeCompany(CompanyStoreRequest $request)
     {   
         try {
-            // dd(auth()->user());
+            // dd(auth()->id);
             $company = Company::create($request->validated());
 
-            if ( isset($company->id)) {
+            if ( isset($company->id) ) {
                 $companyUser = CompanyUser::create([
                     'company_id' => $company->id,
-                    'user_id' => '8152ed5d-0f1c-4682-8bce-8eb0a7e00b96'
+                    'user_id' => 'f499401d-4cda-4bb1-93e4-3c19048f464b'
                 ]);
             } else {
                 echo "company not found";
