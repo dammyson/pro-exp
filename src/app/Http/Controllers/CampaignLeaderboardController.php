@@ -18,8 +18,9 @@ class CampaignLeaderboardController extends Controller
         try {
             // get campaign game rules
             $game_rules = CampaignGameRule::where('campaign_id', $campaign_id)->first();
+            // dd($game_rules);
             // generate leaderboard
-            $leaderboard = CampaignLeaderboard::where('campaign_id', $campaign_id)
+            $leaderboard =  CampaignLeaderboard::where('campaign_id', $campaign_id)
                                 ->whereDate('created_at', Carbon::now()->toDateString())
                                 ->orderBy('total_points', 'DESC')
                                 ->orderBy('play_durations', 'ASC')
@@ -29,7 +30,7 @@ class CampaignLeaderboardController extends Controller
             // $audiencesUser = (new GetBatchAudience(['user_ids' => $leaderboard->pluck('audience_id')]))->run();
             $audiencesUser = CampaignLeaderboard::with('audience')->get()->pluck('audience')->unique();
 
-            
+            // dd($audiencesUser);
             
             foreach ($leaderboard as $key => $player) {
                 $audience = collect($audiencesUser)->where('id', $player->audience_id)->first();
@@ -129,8 +130,6 @@ class CampaignLeaderboardController extends Controller
                                 ->get();
             // get audiences
             // $audiencesUser = (new GetBatchAudience(['user_ids' => $leaderboard->pluck('audience_id')]))->run();
-           
-            // $audience = $user->items()->with('category')->get()->pluck('category')->unique();
 
 
             $audiencesUser = CampaignLeaderboard::with('audience')->get()->pluck('audience')->unique();
@@ -161,7 +160,7 @@ class CampaignLeaderboardController extends Controller
             $start_month = Carbon::now()->firstOfMonth()->format('Y-m-d');
             $end_month = Carbon::now()->lastOfMonth()->format('Y-m-d');
 
-            $leaderboard = DB::table('campaign_leaderboards')
+            $leaderboard =  DB::table('campaign_leaderboards')
                                 ->select('audience_id', DB::raw('SUM(total_points) AS total_points, SUM(play_durations) AS play_durations'))
                                 ->where('campaign_id', $campaign_id)
                                 ->whereDate('created_at', '>=', $start_month)->whereDate('created_at', '<=', $end_month)
@@ -190,7 +189,7 @@ class CampaignLeaderboardController extends Controller
             //report($th);
             return response()->json(['error'=>true, 'message' => 'something went wrong'], 500);
         }
-        return response()->json(['error'=>false, 'message' => "Monthly leaderboard", 'data' => $leaderboard], 200);
+        return response()->json(['error'=> false, 'message' => "Monthly leaderboard", 'data' => $leaderboard], 200);
     }
 
     public function showAllTime($campaign_id)
@@ -199,7 +198,7 @@ class CampaignLeaderboardController extends Controller
             // get campaign game rules
             $game_rules = CampaignGameRule::where('campaign_id', $campaign_id)->first();
             // generate leaderboard
-            $leaderboard = DB::table('campaign_leaderboards')
+            $leaderboard =  DB::table('campaign_leaderboards')
                                 ->select('audience_id', DB::raw('SUM(total_points) AS total_points, SUM(play_durations) AS play_durations'))
                                 ->where('campaign_id', $campaign_id)
                                 ->groupBy('audience_id')
@@ -223,6 +222,7 @@ class CampaignLeaderboardController extends Controller
                     $player->play_durations = $this->convertMilliToSeconds($player->play_durations);
                 }
             }
+
         } catch (\Throwable $th) {
             report($th);
             return response()->json(['error'=>true, 'message' => 'something went wrong'], 500);

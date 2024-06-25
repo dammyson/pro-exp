@@ -32,6 +32,10 @@ return new class extends Migration
             $table->boolean('has_ad_breaker')->default(false);
             $table->integer('duration_per_game_play')->nullable();            
             $table->boolean('import_opentdb_questions')->default(false);
+            $table->integer('max_questions_per_play')->default(0);
+            $table->boolean('is_pay_as_you_go')->default(false);
+            $table->decimal('pay_as_you_go_amount', 8,2)->default(0);
+            $table->enum('payout', ['wallet', 'bank'])->nullable();
             $table->timestamps();
         });
     }

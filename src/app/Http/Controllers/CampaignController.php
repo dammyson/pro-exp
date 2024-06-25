@@ -76,7 +76,7 @@ class CampaignController extends Controller
             'start_date' => 'required|date|after_or_equal:today',
             'end_date' => 'required|date|after:start_date',
             'daily_start' => 'sometimes|required|date_format:H:i:s',
-            'daily_stop' => 'sometimes|required|date_format:H:i:s'
+            'daily_stop' => 'sometimes|required|date_format:H:i:s',
         ]);
 
         try {
@@ -88,6 +88,7 @@ class CampaignController extends Controller
                 'start_date' => $validated['start_date'],
                 'end_date' => $validated['end_date'],
                 'status' => 'CREATED'
+
             ], $validated);
 
         } catch (\Throwable $th) {
